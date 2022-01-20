@@ -98,7 +98,7 @@ const movieDetails = (id) => {
         return response.json();
       })
       .then((movie) => {
-        let details = {"title": movie.Title, "date": movie.Released, "duration": movie.Runtime, "img": movie.Poster, "plot": movie.Plot, "genre": movie.Genre}
+        let details = {"title": movie.Title, "date": movie.Released, "duration": movie.Runtime, "img": movie.Poster, "plot": movie.Plot, "genre": movie.Genre, "rating": movie.imdbRating}
         displayDetails(details);
       })
 }
@@ -121,6 +121,9 @@ const displayDetails = (movie) => {
       <p class="movie-right-plot">
         ${movie.plot}
       </p>
+      <p class="movie-right-rating ${parseInt(movie.rating, 10) < 4 ? "red-bg" : parseInt(movie.rating, 10) < 7 ? "orange-bg" : "green-bg"}">
+        ${movie.rating}
+      </p>
     </div>
   `;
 }
@@ -141,6 +144,15 @@ input.addEventListener('input', e => {
 // Calls APIs function when user clicks on search button
 btn.addEventListener('click', e => {
   if (checkInput(input)) {
+    searchValue = input.value;
+    findMovies(input.value);
+  }
+})
+
+// Calls APIs function when user presses Enter
+input.addEventListener('keypress', e => {
+  e.preventDefault();
+  if (e.key === 'Enter' && checkInput(input)) {
     searchValue = input.value;
     findMovies(input.value);
   }
