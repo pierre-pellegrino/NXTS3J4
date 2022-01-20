@@ -17,7 +17,7 @@
 
 ### Erreurs connues 
 
-- Quand on arrive au dernier film d'une requête, les films s'effacent et le message d'erreur s'affiche
+- ~~Quand on arrive au dernier film d'une requête, les films s'effacent et le message d'erreur s'affiche~~ corrigé ✔
 
 
 ### Features à ajouter

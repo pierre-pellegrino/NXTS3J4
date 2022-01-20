@@ -127,8 +127,10 @@ const displayDetails = (movie) => {
 
 // Displays error
 const displayError = () => {
-  moviesDiv.innerHTML = `Aucun résultat n'a été trouvé.
-                        Vérifiez votre recherche et essayez à nouveau.`;
+  if (moviesArr.length == 0) {
+    moviesDiv.innerHTML = `Aucun résultat n'a été trouvé.
+                          Vérifiez votre recherche et essayez à nouveau.`;
+  }
 }
 
 // Check search input whenever something is typed in
