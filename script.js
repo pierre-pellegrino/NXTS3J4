@@ -151,8 +151,8 @@ btn.addEventListener('click', e => {
 
 // Calls APIs function when user presses Enter
 input.addEventListener('keypress', e => {
-  e.preventDefault();
   if (e.key === 'Enter' && checkInput(input)) {
+    e.preventDefault();
     searchValue = input.value;
     findMovies(input.value);
   }
