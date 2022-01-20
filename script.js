@@ -8,6 +8,10 @@ const moviesDiv = document.querySelector('.movies-wrapper');
 const detailsBG = document.querySelector('.movie-details');
 const detailsModal = document.querySelector('.movie-details-modal');
 
+let searchValue;
+let moviesArr = [];
+let pageNb = 2;
+
 // Intersection observer for movies
 let observer = new IntersectionObserver(function (entries) {
   entries.forEach(entry => {
@@ -38,9 +42,8 @@ const checkInput = (input) => {
 } 
 
 // Get the APIs informations
-const findMovies = (keyword) => {
-  let moviesArr = [];
-  fetch(`https://www.omdbapi.com/?s=${keyword}&plot=full&apikey=${API_KEY}`)
+const findMovies = (keyword, page=1) => {
+  fetch(`https://www.omdbapi.com/?s=${keyword}&plot=full&apikey=${API_KEY}&page=${page}`)
   .then((promise) => {
     return promise.json();
   })
@@ -48,7 +51,7 @@ const findMovies = (keyword) => {
     result.Search.forEach(movie => {
       moviesArr.push({"title": movie.Title, "year": movie.Year, "img": movie.Poster, "id": movie.imdbID});
     })
-    displayMovies(moviesArr);
+    displayMovies(moviesArr, page);
     let movies = document.querySelectorAll('.movie button');
     movies.forEach(movie => {
       movie.addEventListener('click', e => {
@@ -68,7 +71,7 @@ const findMovies = (keyword) => {
 }
 
 // Displays an array of movies on webpage
-const displayMovies = (arr) => {
+const displayMovies = (arr, firstTime) => {
   moviesDiv.innerHTML = "";
 
   arr.forEach(movie => {
@@ -95,7 +98,6 @@ const movieDetails = (id) => {
         return response.json();
       })
       .then((movie) => {
-        console.log(movie);
         let details = {"title": movie.Title, "date": movie.Released, "duration": movie.Runtime, "img": movie.Poster, "plot": movie.Plot, "genre": movie.Genre}
         displayDetails(details);
       })
@@ -137,6 +139,7 @@ input.addEventListener('input', e => {
 // Calls APIs function when user clicks on search button
 btn.addEventListener('click', e => {
   if (checkInput(input)) {
+    searchValue = input.value;
     findMovies(input.value);
   }
 })
@@ -150,6 +153,7 @@ detailsBG.addEventListener('click', function() {
 // Loads more movies when reaching bottom of page
 window.onscroll = function(ev) {
   if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
-      alert("you're at the bottom of the page");
+      findMovies(searchValue, pageNb);
+      pageNb++;
   }
 };
