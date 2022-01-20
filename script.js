@@ -8,17 +8,28 @@ const moviesDiv = document.querySelector('.movies-wrapper');
 const detailsBG = document.querySelector('.movie-details');
 const detailsModal = document.querySelector('.movie-details-modal');
 
-// Intersection observer
+// Intersection observer for movies
 let observer = new IntersectionObserver(function (entries) {
   entries.forEach(entry => {
-    if (entry.intersectionRatio > 0.1) {
+    if (entry.intersectionRatio > 0.2) {
       entry.target.classList.remove('hidden');
-      console.log('item en vue')
     }
   })
 },{
-  threshold: [0.1]
+  threshold: [0.2]
 })
+
+// Intersection observer for body
+// let bodyObserver = new IntersectionObserver(function (entries) {
+//   entries.forEach(entry => {
+//     if (entry.intersectionRatio > 0.8) {
+//       console.log('fin du body');
+//     }
+//   })
+// }, {
+//   threshold: [0.8]
+// })
+// bodyObserver.observe(document.querySelector('body'));
 
 // Check if search input is not empty
 const checkInput = (input) => {
@@ -44,17 +55,15 @@ const findMovies = (keyword) => {
         let id = Array.from(movies).indexOf(e.target);
         movieDetails(moviesArr[id].id);
       })
+    })
     let movieObserver = document.querySelectorAll('.movie');
     movieObserver.forEach(movie => {
       movie.classList.add('hidden');
-    })
-    console.log(movieObserver);
-    observer.observe(movies);
+      observer.observe(movie);
     })
   })
   .catch((error) => {
     displayError();
-    console.log(error);
   })
 }
 
@@ -137,3 +146,10 @@ detailsBG.addEventListener('click', function() {
   detailsBG.classList.remove("active");
   document.querySelector("body").classList.remove("modal-open");
 })
+
+// Loads more movies when reaching bottom of page
+window.onscroll = function(ev) {
+  if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+      alert("you're at the bottom of the page");
+  }
+};
